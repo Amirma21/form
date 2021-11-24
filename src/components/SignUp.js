@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+
 import { useFormik } from "formik";
-import "./SignUp.css"
+import "./SignUp.css";
+import * as Yup from 'yup';
 
 const submitHandler = (value) => {
   // submit Handler
@@ -9,35 +10,26 @@ const submitHandler = (value) => {
 
 const initialValues = { name: "", email: "", password: "" }; // inirialValues
 
-const validate = (values) => {
-  let errors = {};
-  if (!values.name) {
-    errors.name = "Name is required";
-  }
-  if (!values.email) {
-    errors.email = "Email is required";
-  }
+const validationSchema = Yup.object({
+  name: Yup.string().min(2).required(" Name is required "),
+  email: Yup.string().email("invalid email format").required("Email is required")  ,
+  password:Yup.string("invalid password format").required("password is required ")
+})
 
-  if (!values.password) {
-    errors.password = "password is required";
-  }
-
-  return errors;
-};
 
 const SignUp = () => {
   const formik = useFormik({
     initialValues,
     onSubmit: submitHandler,
-    validate,
+    validationSchema,
   }); // manage state , handling submit and validation with fomik
 
-  console.log(formik.touched);
+  // console.log(formik.touched);
 
   return (
     <div>
-      <form onSubmit={formik.handleSubmit} className="formParent" >
-        <div className="form" >  
+      <form onSubmit={formik.handleSubmit} className="formParent">
+        <div className="form">
           <label>Name</label>
           <input
             onChange={formik.handleChange}
@@ -46,7 +38,9 @@ const SignUp = () => {
             value={formik.values.name}
             name="name"
           ></input>
-          {formik.errors.name &&  formik.touched.name && <div className="error">{formik.errors.name}</div>}
+          {formik.errors.name && formik.touched.name && (
+            <div className="error">{formik.errors.name}</div>
+          )}
         </div>
         <div className="form">
           <label>Email</label>
@@ -57,7 +51,9 @@ const SignUp = () => {
             value={formik.values.email}
             name="email"
           ></input>
-          {formik.errors.email &&  formik.touched.email && <div className="error">{formik.errors.email}</div>}
+          {formik.errors.email && formik.touched.email && (
+            <div className="error">{formik.errors.email}</div>
+          )}
         </div>
         <div className="form">
           <label>password</label>
@@ -68,9 +64,13 @@ const SignUp = () => {
             onBlur={formik.handleBlur}
             name="password"
           ></input>
-          {formik.errors.password &&  formik.touched.password && <div className="error">{formik.errors.password}</div>}
+          {formik.errors.password && formik.touched.password && (
+            <div className="error">{formik.errors.password}</div>
+          )}
         </div>
-        <button type="submit" className="submitBtn">submit</button>
+        <button type="submit" className="submitBtn">
+          submit
+        </button>
       </form>
     </div>
   );
