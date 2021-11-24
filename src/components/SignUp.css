@@ -1,0 +1,21 @@
+.error {
+    color: red;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0;
+}
+
+.formParent {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.submitBtn {
+    border: none;
+    border-radius: 20px;
+    padding: .5rem 1rem;
+    cursor: pointer;
+}
